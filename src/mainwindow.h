@@ -29,6 +29,7 @@
 #include <QMainWindow>
 #include <QQuickWidget>
 
+class BoxManager;
 class QQuickWidget;
 
 namespace LearnerProfile {
@@ -52,6 +53,7 @@ public:
 
 private:
     QQuickWidget *m_widget;
+    BoxManager *m_boxManager;
 };
 
 #endif

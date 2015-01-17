@@ -24,28 +24,34 @@
  */
 
 #include "mainwindow.h"
+#include "boxmanager.h"
 
 #include <KMessageBox>
-
 #include <QDebug>
 #include <QIcon>
+#include <QQmlContext>
 #include <QQuickItem>
 #include <QQuickWidget>
 #include <QStandardPaths>
 
 MainWindow::MainWindow()
     : m_widget(new QQuickWidget)
+    , m_boxManager(new BoxManager)
 {
     setWindowIcon(QIcon::fromTheme("system"));
     setWindowTitle(qAppName());
 
+    // register box manager globally in QML Context
+    m_widget->rootContext()->setContextProperty("boxManager", m_boxManager);
+
     m_widget->resize(QSize(800, 600));
+    m_widget->setResizeMode(QQuickWidget::SizeRootObjectToView);
     setCentralWidget(m_widget);
 }
 
 MainWindow::~MainWindow()
 {
-
+    m_boxManager->deleteLater();
 }
 
 bool MainWindow::queryClose()
