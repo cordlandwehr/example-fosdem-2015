@@ -23,30 +23,8 @@
 #  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###
 
-add_subdirectory(qml)
-
-include_directories(
-    ${CMAKE_CURRENT_BINARY_DIR}
+set(qmlFiles
+    Scene.qml
 )
 
-set(example_SRCS
-    main.cpp
-    mainwindow.cpp
-    application.cpp
-
-    box.cpp
-    boxmanager.cpp
-    boxmodel.cpp
-)
-add_executable(exampleFosdem2015 ${example_SRCS})
-target_link_libraries(
-    exampleFosdem2015
-    LINK_PRIVATE
-        Qt5::Qml
-        Qt5::Quick
-        Qt5::QuickWidgets
-        KF5::Declarative
-        KF5::WidgetsAddons
-)
-
-install(TARGETS exampleFosdem2015 ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(FILES ${qmlFiles} DESTINATION ${DATA_INSTALL_DIR}/exampleFosdem2015/qml)

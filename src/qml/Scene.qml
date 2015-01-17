@@ -22,45 +22,21 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+import QtQuick 2.1
+import QtQuick.Controls 1.3
 
-#include "boxmanager.h"
-#include "box.h"
-#include <QList>
-#include <QDebug>
+Item {
+    id: root
+    width: 800
+    height: 600
 
-BoxManager::BoxManager(QObject *parent)
-    : QObject(parent)
-{
+    focus: true
 
-}
+    // element create/remove actions
+    signal createBox(real x, real y);
 
-BoxManager::~BoxManager()
-{
-    qDeleteAll(m_boxes);
-}
-
-Box * BoxManager::createBox()
-{
-    Box *box = new Box;
-    emit boxAboutToBeAdded(box, m_boxes.count());
-    m_boxes.append(box);
-    emit boxAdded();
-    return box;
-}
-
-void BoxManager::removeBox(Box* box)
-{
-    int index = m_boxes.indexOf(box);
-    if (index < 0) {
-        qCritical() << "Box does not exist, aborting";
-        return;
+    Rectangle {
+        anchors.fill: parent
+        color: "lightblue"
     }
-    emit boxAboutToBeRemoved(index);
-    m_boxes.removeAt(index),
-    emit boxRemoved();
-}
-
-QList< Box* > BoxManager::boxes() const
-{
-    return m_boxes;
 }

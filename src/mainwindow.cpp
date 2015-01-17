@@ -25,9 +25,11 @@
 
 #include "mainwindow.h"
 #include "boxmanager.h"
+#include "box.h"
 
 #include <KMessageBox>
 #include <QDebug>
+#include <QPointF>
 #include <QIcon>
 #include <QQmlContext>
 #include <QQuickItem>
@@ -41,8 +43,17 @@ MainWindow::MainWindow()
     setWindowIcon(QIcon::fromTheme("system"));
     setWindowTitle(qAppName());
 
+
+    QUrl mainQmlFile = QUrl::fromLocalFile(QStandardPaths::locate(QStandardPaths::DataLocation, "qml/Scene.qml"));
+    qDebug() << "Locating Scene.qml at" << mainQmlFile;
+    m_widget->setSource(mainQmlFile);
+
     // register box manager globally in QML Context
     m_widget->rootContext()->setContextProperty("boxManager", m_boxManager);
+
+    // listen to context signals
+    connect(m_widget->rootObject(), SIGNAL(createBox(qreal,qreal)),
+        this, SLOT(createBox(qreal,qreal)));
 
     m_widget->resize(QSize(800, 600));
     m_widget->setResizeMode(QQuickWidget::SizeRootObjectToView);
@@ -62,4 +73,12 @@ bool MainWindow::queryClose()
     case KMessageBox::No: return true;
     default: return false;
     }
+}
+
+void MainWindow::createBox(qreal x, qreal y)
+{
+    QPointF pos = QPointF(x,y);
+    Box *box = m_boxManager->createBox();
+    box->setPosition(pos);
+    qDebug() << "created box at" << pos;
 }

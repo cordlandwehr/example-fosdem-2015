@@ -51,6 +51,9 @@ public:
 
     bool queryClose();
 
+public Q_SLOTS:
+    void createBox(qreal x, qreal y);
+
 private:
     QQuickWidget *m_widget;
     BoxManager *m_boxManager;
