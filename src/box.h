@@ -27,11 +27,13 @@
 #define BOX_H
 
 #include <QObject>
+#include <QPointF>
 
 class Box : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
+    Q_PROPERTY(QPointF position READ position WRITE setPosition NOTIFY positionChanged)
 
 public:
     explicit Box(QObject *parent = 0);
@@ -39,13 +41,17 @@ public:
 
     QString text() const;
     void setText(const QString &text);
+    QPointF position() const;
+    void setPosition(const QPointF &position);
 
 Q_SIGNALS:
     void textChanged();
+    void positionChanged();
 
 private:
     Q_DISABLE_COPY(Box)
     QString m_text;
+    QPointF m_position;
 };
 
 #endif

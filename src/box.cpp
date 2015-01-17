@@ -25,10 +25,12 @@
 
 
 #include "box.h"
+#include <QPointF>
 
 Box::Box(QObject *parent)
     : QObject(parent)
     , m_text(QString())
+    , m_position(0, 0)
 {
 }
 
@@ -50,3 +52,18 @@ void Box::setText(const QString &text)
     m_text = text;
     emit textChanged();
 }
+
+QPointF Box::position() const
+{
+    return m_position;
+}
+
+void Box::setPosition(const QPointF& position)
+{
+    if (position == m_position) {
+        return;
+    }
+    m_position = position;
+    emit positionChanged();
+}
+

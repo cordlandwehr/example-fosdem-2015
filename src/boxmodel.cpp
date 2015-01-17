@@ -72,6 +72,7 @@ void BoxModel::setBoxManager(BoxManager *boxManager)
         int boxes = m_boxManager->boxes().count();
         for (int i = 0; i < boxes; ++i) {
             connect(m_boxManager->boxes().at(i), &Box::textChanged, m_signalMapper, static_cast<void (QSignalMapper::*)(void)>(&QSignalMapper::map));
+            connect(m_boxManager->boxes().at(i), &Box::positionChanged, m_signalMapper, static_cast<void (QSignalMapper::*)(void)>(&QSignalMapper::map));
         }
         updateMappings();
     }
