@@ -23,18 +23,37 @@
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "application.h"
 #include "mainwindow.h"
 
-int main(int argc, char **argv)
+#include <KMessageBox>
+
+#include <QDebug>
+#include <QIcon>
+#include <QQuickItem>
+#include <QQuickWidget>
+#include <QStandardPaths>
+
+MainWindow::MainWindow()
+    : m_widget(new QQuickWidget)
+{
+    setWindowIcon(QIcon::fromTheme("system"));
+    setWindowTitle(qAppName());
+
+    m_widget->resize(QSize(800, 600));
+    setCentralWidget(m_widget);
+}
+
+MainWindow::~MainWindow()
 {
 
-    Application app(argc, argv);
+}
 
-    MainWindow *mainWindow = new MainWindow();
-    QSize size(800, 600);
-    mainWindow->setMinimumSize(size);
-    mainWindow->show();
-
-    return app.exec();
+bool MainWindow::queryClose()
+{
+    int result = KMessageBox::warningYesNoCancel(0, "Do you really want to close?");
+    switch(result) {
+    case KMessageBox::Yes: return true;
+    case KMessageBox::No: return true;
+    default: return false;
+    }
 }

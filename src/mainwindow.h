@@ -23,18 +23,35 @@
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "application.h"
-#include "mainwindow.h"
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
 
-int main(int argc, char **argv)
-{
+#include <QMainWindow>
+#include <QQuickWidget>
 
-    Application app(argc, argv);
+class QQuickWidget;
 
-    MainWindow *mainWindow = new MainWindow();
-    QSize size(800, 600);
-    mainWindow->setMinimumSize(size);
-    mainWindow->show();
-
-    return app.exec();
+namespace LearnerProfile {
+    class ProfileManager;
 }
+
+class MainWindow : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    MainWindow();
+    virtual ~MainWindow();
+
+    virtual QSize sizeHint() const Q_DECL_OVERRIDE
+    {
+        return QSize(1000, 700);
+    }
+
+    bool queryClose();
+
+private:
+    QQuickWidget *m_widget;
+};
+
+#endif

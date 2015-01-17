@@ -31,6 +31,7 @@ include_directories(
 
 set(example_SRCS
     main.cpp
+    mainwindow.cpp
     application.cpp
 )
 add_executable(exampleFosdem2015 ${example_SRCS})
@@ -41,6 +42,7 @@ target_link_libraries(
         Qt5::Quick
         Qt5::QuickWidgets
         KF5::Declarative
+        KF5::WidgetsAddons
 )
 
 install(TARGETS exampleFosdem2015 ${INSTALL_TARGETS_DEFAULT_ARGS})
