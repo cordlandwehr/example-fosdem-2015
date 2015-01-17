@@ -43,13 +43,13 @@ MainWindow::MainWindow()
     setWindowIcon(QIcon::fromTheme("system"));
     setWindowTitle(qAppName());
 
+    // register box manager globally in QML Context
+    // set this before loading the scene
+    m_widget->rootContext()->setContextProperty("globalBoxManager", m_boxManager);
 
     QUrl mainQmlFile = QUrl::fromLocalFile(QStandardPaths::locate(QStandardPaths::DataLocation, "qml/Scene.qml"));
     qDebug() << "Locating Scene.qml at" << mainQmlFile;
     m_widget->setSource(mainQmlFile);
-
-    // register box manager globally in QML Context
-    m_widget->rootContext()->setContextProperty("boxManager", m_boxManager);
 
     // listen to context signals
     connect(m_widget->rootObject(), SIGNAL(createBox(qreal,qreal)),

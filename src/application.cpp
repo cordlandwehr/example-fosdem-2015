@@ -24,6 +24,9 @@
  */
 
 #include "application.h"
+#include "boxmanager.h"
+#include "boxmodel.h"
+#include "box.h"
 
 #include <QQmlComponent>
 #include <QQmlContext>
@@ -38,5 +41,8 @@ Application::Application(int& argc, char** argv)
 
 void Application::registerQmlTypes()
 {
-    // register types
+    // register types to make them accessible from the QtQuick engine
+    qmlRegisterType<BoxManager>("org.kde.cordlandwehr.fosdemexample", 1, 0, "BoxManager");
+    qmlRegisterType<BoxModel>("org.kde.cordlandwehr.fosdemexample", 1, 0, "BoxModel");
+    qmlRegisterType<Box>("org.kde.cordlandwehr.fosdemexample", 1, 0, "Box");
 }

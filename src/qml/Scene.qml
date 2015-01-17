@@ -24,6 +24,7 @@
  */
 import QtQuick 2.1
 import QtQuick.Controls 1.3
+import org.kde.cordlandwehr.fosdemexample 1.0
 
 Item {
     id: root
@@ -38,5 +39,26 @@ Item {
     Rectangle {
         anchors.fill: parent
         color: "lightblue"
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                root.createBox(mouse.x, mouse.y)
+            }
+        }
+    }
+
+    Repeater {
+        model: BoxModel {
+            boxManager: globalBoxManager
+        }
+        Rectangle {
+            width: 20; height: 20
+            color: "yellow"
+            border.width: 2
+            property Box box: model.dataRole
+            x: box.position.x
+            y: box.position.y
+        }
     }
 }
