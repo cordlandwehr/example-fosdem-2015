@@ -35,6 +35,7 @@ set(example_SRCS
     application.cpp
 
     box.cpp
+    boxmanager.cpp
 )
 add_executable(exampleFosdem2015 ${example_SRCS})
 target_link_libraries(
