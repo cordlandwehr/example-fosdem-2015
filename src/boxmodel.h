@@ -23,42 +23,47 @@
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "boxmanager.h"
-#include <QList>
-#include <QDebug>
+#ifndef BOXMODEL_H
+#define BOXMODEL_H
 
-BoxManager::BoxManager(QObject *parent)
-    : QObject(parent)
+#include <QAbstractListModel>
+
+class Box;
+class BoxManager;
+class QSignalMapper;
+
+class BoxModel : public QAbstractListModel
 {
+    Q_OBJECT
+    Q_PROPERTY(BoxManager *boxManager READ boxManager WRITE setBoxManager)
 
-}
+public:
+    enum boxRoles {
+        TextRole = Qt::UserRole + 1,
+        DataRole
+    };
 
-BoxManager::~BoxManager()
-{
-    qDeleteAll(m_boxes);
-}
+    explicit BoxModel(QObject *parent = Q_NULLPTR);
+    virtual QHash<int,QByteArray> roleNames() const Q_DECL_OVERRIDE;
+    void setBoxManager(BoxManager *boxManager);
+    BoxManager * boxManager() const;
+    virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
+    virtual int rowCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
+    virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
 
-void BoxManager::addBox(Box* box)
-{
-    Q_ASSERT(box);
-    emit boxAboutToBeAdded(box, m_boxes.count());
-    m_boxes.append(box);
-    emit boxAdded();
-}
+Q_SIGNALS:
+    void boxChanged(int index);
 
-void BoxManager::removeBox(Box* box)
-{
-    int index = m_boxes.indexOf(box);
-    if (index < 0) {
-        qCritical() << "Box does not exist, aborting";
-        return;
-    }
-    emit boxAboutToBeRemoved(index);
-    m_boxes.removeAt(index),
-    emit boxRemoved();
-}
+private Q_SLOTS:
+    void boxAboutToBeAdded(Box *box, int index);
+    void onBoxAdded();
+    void onBoxAboutToBeRemoved(int index);
+    void emitBoxChanged(int row);
 
-QList< Box* > BoxManager::boxes() const
-{
-    return m_boxes;
-}
+private:
+    void updateMappings();
+    BoxManager *m_boxManager;
+    QSignalMapper *m_signalMapper;
+};
+
+#endif
