@@ -35,7 +35,7 @@ class BoxManager : public QObject
     Q_OBJECT
 
 public:
-    explicit BoxManager(QObject *parent = 0);
+    explicit BoxManager(QObject *parent = Q_NULLPTR);
     ~BoxManager();
     Box * createBox();
     void removeBox(Box *box);
