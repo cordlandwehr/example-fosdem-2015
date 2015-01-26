@@ -24,41 +24,58 @@
  */
 import QtQuick 2.1
 import QtQuick.Controls 1.3
+import QtQuick.Layouts 1.1
 import org.kde.cordlandwehr.fosdemexample 1.0
 
-Item {
+RowLayout {
     id: root
     width: 800
     height: 600
 
-    focus: true
-
     // element create/remove actions
     signal createBox(real x, real y);
 
-    Rectangle {
-        anchors.fill: parent
-        color: "lightblue"
+    Item {
+        id: scene
+        Layout.fillWidth: true
+        Layout.preferredHeight: root.height
 
-        MouseArea {
+        focus: true
+
+        Rectangle {
             anchors.fill: parent
-            onClicked: {
-                root.createBox(mouse.x, mouse.y)
+            color: "lightblue"
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    root.createBox(mouse.x, mouse.y)
+                }
+            }
+        }
+
+        Repeater {
+            model: BoxModel {
+                boxManager: globalBoxManager
+            }
+            Rectangle {
+                width: 20; height: 20
+                color: "yellow"
+                border.width: 2
+                property Box box: model.dataRole
+                x: box.position.x
+                y: box.position.y
             }
         }
     }
-
-    Repeater {
+    ListView{
+        Layout.preferredHeight: root.height
+        Layout.minimumWidth: 100
         model: BoxModel {
             boxManager: globalBoxManager
         }
-        Rectangle {
-            width: 20; height: 20
-            color: "yellow"
-            border.width: 2
-            property Box box: model.dataRole
-            x: box.position.x
-            y: box.position.y
+        delegate: Text {
+            text: model.dataRole.position.x + " / " + model.dataRole.position.y
         }
     }
 }
